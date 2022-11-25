@@ -138,6 +138,7 @@
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
+
 .dFlex{
   display: flex;
 }
@@ -146,4 +147,27 @@
 }
 .alignCenter{
   text-align: center;
+}
+
+@media (max-width: 414px) {
+  .download {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .download-btn-search > strong{
+    display: none;
+  }
+  .download-btn-search > span{
+    margin-left: 0;
+  }
+  .download-btn-search{
+    padding: 0;
+  }
+  .searchCentered{
+    padding: 1rem 0.25rem;
+  }
+}
+
+.dev-test{
+  color: #0070f3;
 }

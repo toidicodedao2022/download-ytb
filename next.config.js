@@ -13,6 +13,14 @@ const nextConfig = {
         destination:'/src/download'
       }
     ]
+  },
+  images:{
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com'
+      }
+    ]
   }
 }
 
