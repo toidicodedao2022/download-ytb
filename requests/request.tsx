@@ -2,7 +2,9 @@ import axios from "axios";
 import useSWR from 'swr'
 import {Api, ResponseApi} from "../config/Api";
 import {string} from "prop-types";
+
 const utf8 = require('utf8');
+
 class Request {
     async get(url: string, params: any = {}): Promise<ResponseApi> {
         let result: ResponseApi
@@ -15,26 +17,58 @@ class Request {
         })
     }
 
-    async suggestGoogle(keyword:string){
+    async suggestGoogle(keyword: string) {
         var config = {
             method: 'get',
-            url: '/api/suggestYtb?q='+keyword,
-            headers: { }
+            url: '/api/suggest-ytb?q=' + keyword,
+            headers: {}
         };
-        // return []
-        // return [12,12,34,12,12,34,12,12,34,12,12,34,12,12,34,12,12,34,12,12,34,12,12,34]
-
-        return new Promise((resolve:any)=>{
+        return new Promise((resolve: any) => {
             axios(config)
-                .then(function (response:any) {
-                        return resolve(response.data.data.result || [])
-                    })
+                .then(function (response: any) {
+                    return resolve(response.data.data.result)
+                })
                 .catch(function (error) {
                     console.log(error);
                     return resolve([])
                 });
         })
+    }
 
+    async listVideo(keyword: string) {
+        var config = {
+            method: 'get',
+            url: '/api/list-video?q=' + keyword,
+            headers: {}
+        };
+
+        return new Promise((resolve: any) => {
+            axios(config)
+                .then(function (response: any) {
+                    return resolve(response.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })
+    }
+    async isVideoYoutube(keyword:string):Promise<boolean>{
+        var config = {
+            method: 'get',
+            url: '/api/check-video-youtube?video-id=' + keyword,
+            headers: {}
+        };
+
+        return new Promise((resolve: any) => {
+            axios(config)
+                .then(function (response: any) {
+                    return resolve(response.status===200)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    console.log(false);
+                });
+        })
     }
 }
 
