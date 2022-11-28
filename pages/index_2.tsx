@@ -16,40 +16,53 @@ const labelInputSearch = 'Youtube Link'
 import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
 import StrHelper from "../helpers/StrHelper";
 import ListVideo from "./src/list-video";
+import {useRouter} from "next/router";
 
 export default function Home() {
+    const { query } = useRouter();
     const [loading, setLoading] = useState(false)
     const [labelInput, setLabelInput] = useState(placeHolderInputSearch)
     const [valueSearch, setValueSearch] = useState('')
     const [result, setResult] = useState({})
     const [options, setOption] = useState([])
     const [listVideo,setListVideo]=useState({});
+    const [pathSearch,setPathSearch] = useState('')
     const request = new Request();
 
     useEffect(() => {
-
+        const path = query.path;
+        if(typeof path==='string' && path.length > 0 && pathSearch!==query.path){
+            request.isVideoYoutube(path).then((res:boolean)=>{
+                console.log('result id',res,path)
+                setPathSearch(path ?? '')
+                if(res){
+                    console.log('today')
+                    console.log(valueSearch)
+                    _handlerClickSearch(`https://www.youtube.com/watch?v=`+query.path)
+                }
+            })
+        }
     })
 
-    const _handlerClickSearch = () => {
+    const _handlerClickSearch =async (data:any=null) => {
         let val = valueSearch.trim();
+        if(typeof data==='string'){
+            val = data
+        }
         if(val.length===0){
             return;
         }
-
+        setResult({})
         if(!StrHelper.isValidHttpUrl(val)){
             return findListVideo(val);
         }
-        return
-        request.suggestGoogle('đi về nhà').then((optionsResponse: any) => {
-            console.log(optionsResponse)
-            setOption(optionsResponse)
-        })
+
+
         setResult({
             loading: true
         })
         setLoading(true)
         setTimeout(function () {
-
             setResult({
                 data: {
                     id: 'bSKAzou_gXM',
@@ -118,7 +131,7 @@ export default function Home() {
             //     setResult(res)
             // })
             setLoading(false)
-        }, 0)
+        }, 5000)
     }
 
     const findListVideo =async (val:string)=>{
@@ -134,7 +147,6 @@ export default function Home() {
             setLabelInput(placeHolderInputSearch)
         }
     }
-
     const _handlerKeyUpInput = (e: any) => {
         let val = e.target.value.trim();
         setValueSearch(val)
@@ -162,22 +174,9 @@ export default function Home() {
                         <h1>Tải video YouTube</h1>
                         <p>Tải video YouTube về máy dưới định dạng MP3, MP4, 3GP,...</p>
                         <div className={styles.dFlex}>
-                            {/*<TextField*/}
-                            {/*    onFocus={_handlerInputFocus} onBlur={_handlerInputBlur} fullWidth label={labelInput} placeholder={placeHolderInputSearch} id="fullWidth"*/}
-                            {/*    onKeyUp={_handlerKeyUpInput}*/}
-                            {/*/>*/}
-                            <Autocomplete
-                                className={"w-100"}
-                                freeSolo
-                                options={options}
-                                renderInput={(params:any) => <TextField
-                                    fullWidth {...params} label={labelInput}
-                                    id="outlined-basic"
-                                    variant="outlined"
-                                    onFocus={_handlerInputFocus} onBlur={_handlerInputBlur}
-                                    onKeyUp={_handlerKeyUpInput}
-                                    placeholder={placeHolderInputSearch}
-                                />}
+                            <TextField
+                                onFocus={_handlerInputFocus} onBlur={_handlerInputBlur} fullWidth label={labelInput} placeholder={placeHolderInputSearch} id="fullWidth"
+                                onKeyUp={_handlerKeyUpInput} defaultValue={valueSearch}
                             />
                             <LoadingButton
                                 onClick={_handlerClickSearch}

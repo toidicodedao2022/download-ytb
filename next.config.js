@@ -11,6 +11,14 @@ const nextConfig = {
       {
         source:'/download',
         destination:'/src/download'
+      },
+      {
+        source:'/youtube/:path',
+        destination:'/index_1'
+      },
+      {
+        source:'/:path',
+        destination:'/index_2'
       }
     ]
   },
@@ -19,7 +27,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'i.ytimg.com'
-      }
+      },
     ]
   }
 }
