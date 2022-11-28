@@ -165,7 +165,7 @@ export default function Home() {
     return (
         <div className={styles.mainBg}>
             <Head>
-                <title>Download youtube</title>
+                <title>Download youtube 2</title>
             </Head>
             <main>
                 <Header/>

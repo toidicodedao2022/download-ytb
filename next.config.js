@@ -17,9 +17,14 @@ const nextConfig = {
         destination:'/index_1'
       },
       {
-        source:'/:path',
+        source:'/youtube',
+        destination:'/index_2'
+      },
+      {
+        source:'/youtube/:path',
         destination:'/index_2'
       }
+
     ]
   },
   images:{
@@ -27,9 +32,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'i.ytimg.com'
-      },
+      }
     ]
-  }
+  },
+  experimental: {
+    allowMiddlewareResponseBody: true,
+  },
 }
 
 module.exports = nextConfig
