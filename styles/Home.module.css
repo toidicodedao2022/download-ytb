@@ -171,3 +171,37 @@
 .dev-test{
   color: #0070f3;
 }
+
+.form-search{
+  position: relative;
+  width: 100%;
+}
+.result-search{
+  overflow-y: auto;
+  max-height: calc(100vh / 3);
+  position: absolute;
+  width: 100%;
+  background: white;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  z-index: 9999;
+  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+  padding-left: 1rem;
+  border-radius: 0 0 10px 10px;
+}
+
+.result-search > ul{
+  margin-top: 0;
+  list-style: none;
+  padding-left: 0;
+  text-align: left;
+}
+.result-search > ul > li{
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+}
+.result-search > ul > li:hover{
+  cursor: pointer;
+  background: #e3e3e3;
+}

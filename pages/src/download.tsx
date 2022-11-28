@@ -12,7 +12,7 @@ import TableCell from '@mui/material/TableCell';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 export default function Download({result, ...prop}: any) {
     const [tab, setTab] = useState(0)
-    const data = result.data || {};
+    const data = typeof result.data !== "undefined" ? result.data : {};
     const changeTab = (event: any, newValue: number) => {
         setTab(newValue)
     }

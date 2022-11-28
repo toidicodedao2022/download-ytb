@@ -21,13 +21,17 @@ class Request {
             url: '/api/suggestYtb?q='+keyword,
             headers: { }
         };
+        // return []
+        // return [12,12,34,12,12,34,12,12,34,12,12,34,12,12,34,12,12,34,12,12,34,12,12,34]
+
         return new Promise((resolve:any)=>{
             axios(config)
                 .then(function (response:any) {
-                        return resolve(response.data.data.result)
+                        return resolve(response.data.data.result || [])
                     })
                 .catch(function (error) {
                     console.log(error);
+                    return resolve([])
                 });
         })
 

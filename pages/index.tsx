@@ -15,6 +15,7 @@ const placeHolderInputSearch = 'Tìm kiếm hoặc nhập link YouTube...';
 const labelInputSearch = 'Youtube Link'
 import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
 import StrHelper from "../helpers/StrHelper";
+import Box from "@mui/material/Box";
 
 export default function Home() {
     const [loading, setLoading] = useState(false)
@@ -29,16 +30,12 @@ export default function Home() {
     })
 
     const _handlerClickSearch = () => {
-        request.suggestGoogle('đi về nhà').then((optionsResponse: any) => {
-            console.log(optionsResponse)
-            setOption(optionsResponse)
-        })
         setResult({
             loading: true
         })
         setLoading(true)
+        setOption([])
         setTimeout(function () {
-
             setResult({
                 data: {
                     id: 'bSKAzou_gXM',
@@ -107,7 +104,7 @@ export default function Home() {
             //     setResult(res)
             // })
             setLoading(false)
-        }, 0)
+        }, 200)
     }
 
     const _handlerInputFocus = () => {
@@ -120,7 +117,10 @@ export default function Home() {
     }
 
     const _handlerKeyUpInput = (e: any) => {
-        let val = e.target.value.trim();
+
+        console.log(e.target.value)
+        let val = e.target.value;
+        console.log(val)
         setValueSearch(val)
         if(val.length===0){
             return;
@@ -128,9 +128,15 @@ export default function Home() {
         if(StrHelper.isValidHttpUrl(val)){
             return;
         }
-        request.suggestGoogle(val).then((res:any)=>{
+        request.suggestGoogle(val.trim()).then((res:any)=>{
+            console.log(res)
             setOption(res)
         })
+    }
+
+    const _handlerSelectOption = (value:any)=>{
+        setValueSearch(value)
+        setOption([])
     }
 
     return (
@@ -144,37 +150,48 @@ export default function Home() {
                     <div className={styles.searchCentered + ` ${styles.boxWhite}`}>
                         <h1>Tải video YouTube</h1>
                         <p>Tải video YouTube về máy dưới định dạng MP3, MP4, 3GP,...</p>
-                        <div className={styles.dFlex}>
-                            {/*<TextField*/}
-                            {/*    onFocus={_handlerInputFocus} onBlur={_handlerInputBlur} fullWidth label={labelInput} placeholder={placeHolderInputSearch} id="fullWidth"*/}
-                            {/*    onKeyUp={_handlerKeyUpInput}*/}
-                            {/*/>*/}
-                            <Autocomplete
-                                className={"w-100"}
-                                freeSolo
-                                options={options}
-                                renderInput={(params:any) => <TextField
-                                    fullWidth {...params} label={labelInput}
-                                    id="outlined-basic"
-                                    variant="outlined"
-                                    onFocus={_handlerInputFocus} onBlur={_handlerInputBlur}
-                                    onKeyUp={_handlerKeyUpInput}
-                                    placeholder={placeHolderInputSearch}
-                                />}
-                            />
-                            <LoadingButton
-                                onClick={_handlerClickSearch}
-                                endIcon={<Search/>}
-                                loading={loading}
-                                loadingPosition="end"
-                                variant="contained"
-                                color="error"
-                                className={styles['download-btn-search']}
-                                sx={{my: 0, textTransform: 'none'}}
-                            >
-                                <strong>Search</strong>
-                            </LoadingButton>
+                        <div className={styles['form-search']}>
+                            <div className={styles.dFlex}>
+                                <TextField
+                                    onFocus={_handlerInputFocus} onBlur={_handlerInputBlur} fullWidth label={labelInput} placeholder={placeHolderInputSearch} id="fullWidth"
+                                    onChange={_handlerKeyUpInput}
+                                    value={valueSearch}
+                                />
+                                {/*<Autocomplete*/}
+                                {/*    className={"w-100"}*/}
+                                {/*    freeSolo*/}
+                                {/*    options={options}*/}
+                                {/*    renderInput={(params:any) => <TextField*/}
+                                {/*        fullWidth {...params} label={labelInput}*/}
+                                {/*        id="outlined-basic"*/}
+                                {/*        variant="outlined"*/}
+                                {/*        onFocus={_handlerInputFocus} onBlur={_handlerInputBlur}*/}
+                                {/*        onKeyUp={_handlerKeyUpInput}*/}
+                                {/*        placeholder={placeHolderInputSearch}*/}
+                                {/*    />}*/}
+                                {/*/>*/}
+                                <LoadingButton
+                                    onClick={_handlerClickSearch}
+                                    endIcon={<Search/>}
+                                    loading={loading}
+                                    loadingPosition="end"
+                                    variant="contained"
+                                    color="error"
+                                    className={styles['download-btn-search']}
+                                    sx={{my: 0, textTransform: 'none'}}
+                                >
+                                    <strong>Search</strong>
+                                </LoadingButton>
+                            </div>
+                            <Box className={styles['result-search'] + (options.length===0 ? ' d-none' : '')}>
+                                <ul>
+                                    {options.map((option:string,index:number)=>{
+                                        return (<li onClick={(value)=>_handlerSelectOption(option)} value={option} key={index}>{option}</li>)
+                                    })}
+                                </ul>
+                            </Box>
                         </div>
+
                         <p>Sử dụng dịch vụ này là bạn đang đồng ý với <Link key={0} href="#!">điều khoản sử dụng</Link>.</p>
                         <Download result={result}/>
                     </div>
